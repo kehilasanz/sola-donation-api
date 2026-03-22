@@ -1,5 +1,4 @@
-// trigger deploy
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).end();
   }
@@ -10,13 +9,17 @@ export default async function handler(req, res) {
     const response = await fetch("https://api.sola.co/v1/payments", {
       method: "POST",
       headers: {
-        "Authorization": "hachhatorebmeirbaalhaned87fba933d784b18889f4a",
+        "Authorization": `Bearer ${process.env.SOLA_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        amount: amount * 100,
+        amount: Math.round(amount * 100),
         currency: "USD",
-        customer: { name, email }
+        customer: {
+          name,
+          email
+        },
+        description: "Donation"
       })
     });
 
@@ -27,6 +30,6 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    res.status(500).json({ error: "Failed" });
+    res.status(500).json({ error: "Payment failed" });
   }
-}
+};
