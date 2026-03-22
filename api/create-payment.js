@@ -1,5 +1,15 @@
-// redeploy trigger
 module.exports = async function handler(req, res) {
+
+  // ✅ FIX CORS (THIS WAS YOUR ISSUE)
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // ✅ Handle preflight request
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).end();
   }
@@ -20,15 +30,20 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         amount: Math.round(amount * 100),
         currency: "USD",
-        customer: { name, email },
+        customer: {
+          name,
+          email
+        },
         description: "Donation"
       })
     });
 
     const data = await response.json();
 
+    console.log("SOLA RESPONSE:", data);
+
     res.status(200).json({
-      checkoutUrl: data.checkout_url || data.url
+      checkoutUrl: data.checkout_url || data.url || data.payment_url
     });
 
   } catch (err) {
