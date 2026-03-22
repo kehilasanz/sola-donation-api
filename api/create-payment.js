@@ -9,7 +9,7 @@ module.exports = async function handler(req, res) {
     const response = await fetch("https://api.sola.co/v1/payments", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.hachhatorebmeirbaalhaned87fba933d784b18889f4a}`,
+        "Authorization": `Bearer ${process.env.SOLA_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
