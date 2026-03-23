@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     const { amount, name, email } = body;
 
     // ✅ CALL SOLA
-    const response = await fetch("https://api.sola.co/v1/payments", {
+const response = await fetch("https://payments.sola.co/v1/payments", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.SOLA_API_KEY}`,
