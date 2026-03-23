@@ -45,8 +45,10 @@ module.exports = async function handler(req, res) {
       checkoutUrl: data.checkout_url || data.url || data.payment_url
     });
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Payment failed" });
-  }
-};
+} catch (err) {
+  console.error("FULL ERROR:", err);
+
+  res.status(500).json({
+    error: err.message || "Payment failed"
+  });
+}
